@@ -1,0 +1,26 @@
+name: Build y Deploy SCADA
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Generar archivo de credenciales
+      run: |
+        sed -e "s|{{ADMIN_USERNAME}}|${{ secrets.ADMIN_USERNAME }}|g" \
+            -e "s|{{ADMIN_PASSWORD}}|${{ secrets.ADMIN_PASSWORD }}|g" \
+            -e "s|{{USER_USERNAME}}|${{ secrets.USER_USERNAME }}|g" \
+            -e "s|{{USER_PASSWORD}}|${{ secrets.USER_PASSWORD }}|g" \
+            credentials.template.js > credentials.js
+    
+    - name: Deploy a GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .

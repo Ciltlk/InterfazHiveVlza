@@ -1,0 +1,10 @@
+# Credenciales generadas (nunca commitear)
+credentials.js
+
+# Node modules
+node_modules/
+
+# Otros
+.DS_Store
+*.log
+.env
